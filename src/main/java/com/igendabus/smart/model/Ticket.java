@@ -1,5 +1,6 @@
 package com.igendabus.smart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,5 +47,6 @@ public class Ticket {
     private Set<BusRoute> routes = new HashSet<>();
 
     @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("ticket")
     private QRCode qrCode;
 }

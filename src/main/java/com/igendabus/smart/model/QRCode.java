@@ -1,5 +1,6 @@
 package com.igendabus.smart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,5 +33,6 @@ public class QRCode {
 
     @OneToOne
     @JoinColumn(name = "ticket_id", nullable = false)
+    @JsonIgnoreProperties("qrCode")
     private Ticket ticket;
 }

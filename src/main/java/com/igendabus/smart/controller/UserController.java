@@ -70,4 +70,33 @@ public class UserController {
         return new ResponseEntity<>(
             userService.getUsersByProvinceName(provinceName, page, size), HttpStatus.OK);
     }
+// GET /api/users/by-province?identifier=Kigali OR ?identifier=KG
+@GetMapping("/by-province")
+public ResponseEntity<Page<User>> getUsersByProvince(
+        @RequestParam String identifier,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return new ResponseEntity<>(
+        userService.getUsersByProvinceIdentifier(identifier, page, size), HttpStatus.OK);
+}
+
+// GET /api/users/by-location?identifier=Gasabo (any level)
+@GetMapping("/by-location")
+public ResponseEntity<Page<User>> getUsersByLocation(
+        @RequestParam String identifier,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return new ResponseEntity<>(
+        userService.getUsersByAnyLocation(identifier, page, size), HttpStatus.OK);
+}
+
+// GET /api/users/check-exists?email=jean.mugisha@gmail.com
+@GetMapping("/check-exists")
+public ResponseEntity<?> checkUserExists(@RequestParam String email) {
+    boolean exists = userService.checkUserExists(email);
+    if (exists) {
+        return new ResponseEntity<>("User with email " + email + " EXISTS", HttpStatus.OK);
+    }
+    return new ResponseEntity<>("User with email " + email + " does NOT exist", HttpStatus.NOT_FOUND);
+}
 }

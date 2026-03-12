@@ -33,4 +33,26 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("SELECT u FROM User u WHERE " +
            "u.village.parent.parent.parent.parent.name = :provinceName")
     Page<User> findUsersByProvinceName(@Param("provinceName") String provinceName, Pageable pageable);
+
+    // Find users by province using ONE identifier (code OR name)
+    // Works with both: ?identifier=KG or ?identifier=Kigali
+    @Query("SELECT u FROM User u WHERE " +
+           "u.village.parent.parent.parent.parent.code = :identifier OR " +
+           "u.village.parent.parent.parent.parent.name = :identifier")
+    Page<User> findUsersByProvinceIdentifier(@Param("identifier") String identifier, Pageable pageable);
+
+    // Find users by ANY location level (village, cell, sector, district, province)
+    // Works with name or code at any level
+    @Query("SELECT u FROM User u WHERE " +
+           "u.village.name = :identifier OR " +
+           "u.village.code = :identifier OR " +
+           "u.village.parent.name = :identifier OR " +
+           "u.village.parent.code = :identifier OR " +
+           "u.village.parent.parent.name = :identifier OR " +
+           "u.village.parent.parent.code = :identifier OR " +
+           "u.village.parent.parent.parent.name = :identifier OR " +
+           "u.village.parent.parent.parent.code = :identifier OR " +
+           "u.village.parent.parent.parent.parent.name = :identifier OR " +
+           "u.village.parent.parent.parent.parent.code = :identifier")
+    Page<User> findUsersByAnyLocation(@Param("identifier") String identifier, Pageable pageable);
 }

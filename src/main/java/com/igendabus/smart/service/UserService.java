@@ -70,4 +70,20 @@ public class UserService {
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElse(null);
     }
+// Get users by province — works with BOTH code and name
+public Page<User> getUsersByProvinceIdentifier(String identifier, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by("firstName").ascending());
+    return userRepository.findUsersByProvinceIdentifier(identifier, pageable);
+}
+
+// Get users by ANY location level
+public Page<User> getUsersByAnyLocation(String identifier, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by("firstName").ascending());
+    return userRepository.findUsersByAnyLocation(identifier, pageable);
+}
+
+// Check if user exists by email
+public boolean checkUserExists(String email) {
+    return userRepository.existsByEmail(email);
+}
 }
